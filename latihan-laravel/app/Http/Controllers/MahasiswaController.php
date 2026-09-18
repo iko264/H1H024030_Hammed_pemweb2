@@ -25,6 +25,6 @@ class MahasiswaController extends Controller
             'metode' => $request->method(),
             'path' => $request->path(),
         ]);
-}
+    }
 
 }

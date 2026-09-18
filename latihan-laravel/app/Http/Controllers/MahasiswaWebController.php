@@ -48,9 +48,11 @@ class MahasiswaWebController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $nim)
     {
-        //
+        $mahasiswa = Mahasiswa::with('matakuliahs')->where('nim', $nim)->firstOrFail();
+
+        return view('mahasiswa.show', ['mahasiswa' => $mahasiswa]);
     }
 
     /**

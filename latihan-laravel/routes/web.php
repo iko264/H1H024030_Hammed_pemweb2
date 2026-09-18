@@ -8,8 +8,7 @@ use App\Http\Controllers\MahasiswaWebController;
 Route::get('/data-mahasiswa', [MahasiswaController::class,
 'index'])->name('mahasiswa.index');
 
-Route::get('/data-mahasiswa/{nim}', [MahasiswaController::class,
-'show'])->name('mahasiswa.show');
+//Route::get('/data-mahasiswa/{nim}', [MahasiswaController::class,'show'])->name('mahasiswa.show');
 
 Route::get('/cari-mahasiswa', [MahasiswaController::class, 'cari']);
 
@@ -18,3 +17,4 @@ Route::get('/matakuliah/{kode}', [MatakuliahController::class, 'show'])->name('m
 Route::get('/cari-matakuliah', [MatakuliahController::class, 'cari']);
 
 Route::get('/mahasiswa-data', [MahasiswaWebController::class,'index'])->name('mahasiswa.data');
+Route::get('/mahasiswa-data/{nim}', [MahasiswaWebController::class, 'show'])->name('mahasiswa.show');
