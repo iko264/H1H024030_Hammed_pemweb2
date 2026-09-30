@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\MahasiswaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\MatakuliahController;
+use App\Http\Controllers\Api\ProgramStudiController;
 
 Route::get('/status', function () {
     return response()->json([
@@ -10,4 +12,6 @@ Route::get('/status', function () {
         'waktu' => now()->toIso8601String(),
     ]);
 });
+Route::get('/program-studi/{programStudi}/mahasiswa', [ProgramStudiController::class, 'mahasiswa']);
 Route::apiResource('mahasiswa', MahasiswaController::class);
+Route::apiResource('matakuliah', MatakuliahController::class);
