@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v3"
+
 	"latihan-fiber-api/internal/handler"
 )
 
@@ -13,8 +14,11 @@ func Daftarkan(app *fiber.App) {
 			"pesan":  "API Fiber aktif",
 		})
 	})
+
 	mahasiswa := api.Group("/mahasiswa")
 	mahasiswa.Get("/", handler.DaftarMahasiswa)
-	mahasiswa.Get("/nim/:nim", handler.CariMahasiswaByNIM)
+	mahasiswa.Post("/", handler.BuatMahasiswa)
 	mahasiswa.Get("/:id", handler.DetailMahasiswa)
+	mahasiswa.Put("/:id", handler.PerbaruiMahasiswa)
+	mahasiswa.Delete("/:id", handler.HapusMahasiswa)
 }
