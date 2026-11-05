@@ -23,6 +23,7 @@ func main() {
 	app.Use(logger.New())
 	app.Use(recoverer.New())
 	app.Use(middleware.WaktuProses())
+	app.Use("/api", middleware.KunciApi(konf.KunciApi))
 	router.Daftarkan(app)
 	app.Use(func(c fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"sukses": false,
