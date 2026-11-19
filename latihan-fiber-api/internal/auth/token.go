@@ -6,6 +6,9 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+
+	"latihan-fiber-api/internal/config"
+	"latihan-fiber-api/internal/model"
 )
 
 type Klaim struct {
@@ -46,5 +49,29 @@ func PeriksaToken(nilaiToken string, rahasia string) (*Klaim, error) {
 		return nil, errors.New("token tidak valid")
 	}
 
+	if DalamDaftarHitam(nilaiToken) {
+		return nil, errors.New("token sudah dicabut")
+	}
+
 	return klaim, nil
+}
+
+func DalamDaftarHitam(nilaiToken string) bool {
+	var jumlah int64
+	config.DB.Model(&model.TokenDaftarHitam{}).
+		Where("token = ?", nilaiToken).
+		Count(&jumlah)
+	return jumlah > 0
+}
+
+func CabutToken(nilaiToken string, kedaluwarsa time.Time) error {
+	return config.DB.Create(&model.TokenDaftarHitam{
+		Token:       nilaiToken,
+		Kedaluwarsa: kedaluwarsa,
+	}).Error
+}
+
+func BersihkanDaftarHitam() error {
+	return config.DB.Where("kedaluwarsa < ?", time.Now()).
+		Delete(&model.TokenDaftarHitam{}).Error
 }

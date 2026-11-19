@@ -1,10 +1,20 @@
 package validasi
 
 import (
+	"regexp"
+
 	"github.com/go-playground/validator/v10"
 )
 
 var pemeriksa = validator.New()
+
+var polaNim = regexp.MustCompile(`^H[0-9]+$`)
+
+func init() {
+	pemeriksa.RegisterValidation("nim", func(fl validator.FieldLevel) bool {
+		return polaNim.MatchString(fl.Field().String())
+	})
+}
 
 type PesanGalat struct {
 	Field string `json:"field"`
@@ -37,6 +47,8 @@ func susunPesan(item validator.FieldError) string {
 		return "Nilai minimal adalah " + item.Param()
 	case "max":
 		return "Nilai maksimal adalah " + item.Param()
+	case "nim":
+		return "NIM harus diawali huruf H diikuti angka"
 	case "gte":
 		return "Nilai tidak boleh kurang dari " + item.Param()
 	case "lte":

@@ -9,6 +9,7 @@ import (
 	recoverer "github.com/gofiber/fiber/v3/middleware/recover"
 	"github.com/gofiber/fiber/v3/middleware/requestid"
 
+	"latihan-fiber-api/internal/auth"
 	"latihan-fiber-api/internal/config"
 	"latihan-fiber-api/internal/middleware"
 	"latihan-fiber-api/internal/router"
@@ -19,6 +20,9 @@ func main() {
 	config.HubungkanBasisData(konf)
 	config.Migrasi()
 	config.DataAwal()
+	if err := auth.BersihkanDaftarHitam(); err != nil {
+		log.Println("Gagal membersihkan daftar hitam token: ", err)
+	}
 
 	app := fiber.New(fiber.Config{
 		AppName:      konf.NamaAplikasi,
