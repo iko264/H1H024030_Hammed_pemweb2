@@ -2,8 +2,9 @@ package config
 
 import (
 	"os"
-
+	
 	"github.com/joho/godotenv"
+	"strconv"
 )
 
 type Konfigurasi struct {
@@ -16,11 +17,17 @@ type Konfigurasi struct {
 	DbNama       string
 	DbUser       string
 	DbSandi      string
+	JwtSecret 	 string
+	JwtTtlMenit  int
 }
 
 func Muat() Konfigurasi {
 	_ = godotenv.Load()
 
+	ttl, err := strconv.Atoi(ambil("JWT_TTL_MENIT", "120"))
+	if err != nil {
+	ttl = 120
+	}
 	return Konfigurasi{
 		NamaAplikasi: ambil("APP_NAME", "Fiber API"),
 		Port:         ambil("APP_PORT", "3000"),
@@ -31,7 +38,10 @@ func Muat() Konfigurasi {
 		DbNama:       ambil("DB_NAME", "pemweb2_fiber"),
 		DbUser:       ambil("DB_USER", "root"),
 		DbSandi:      ambil("DB_PASS", ""),
+		JwtSecret: 	  ambil("JWT_SECRET", "rahasia-bawaan"),
+		JwtTtlMenit:  ttl,
 	}
+	
 }
 
 func ambil(kunci string, bawaan string) string {
